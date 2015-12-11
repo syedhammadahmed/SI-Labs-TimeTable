@@ -25,5 +25,19 @@ public class Controller {
         return true;
     }
     
+    public void printTest(){
+        System.out.println(semesterTable.university);
+        System.out.println(semesterTable.department);
+        System.out.println(semesterTable.semester);
+        System.out.println(semesterTable.section);
+        System.out.println(semesterTable.classRoom);
+        
+        for(int i=0; i<5; i++){
+            for(int j=0; j<8; j++){
+                System.out.println(semesterTable.table[i][j] + " ");
+            }
+        }
+    }
+    
 }
 

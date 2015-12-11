@@ -11,6 +11,6 @@ package timetable.utility;
  */
 public class Constants {
     
-    public static int NUMBER_OF_SEMESTERS = 1;
+//    public static int NUMBER_OF_SHEETS = 1;
     
 }

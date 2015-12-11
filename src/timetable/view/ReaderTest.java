@@ -23,6 +23,8 @@ public class ReaderTest {
             System.out.println("Collate Fail!!");
         }
         
+        controller.printTest();
+        
     }
     
 }

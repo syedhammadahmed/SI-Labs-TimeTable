@@ -17,7 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 //import java.io.FileNotFoundException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import static timetable.utility.Constants.NUMBER_OF_SEMESTERS;
+//import static timetable.utility.Constants.NUMBER_OF_SHEETS;
 
 /**
  *
@@ -35,7 +35,7 @@ public class XLSXReader implements Reader {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        XSSFSheet semesterSheet;
+        XSSFSheet semesterSheet = null;
 //        semesterSheet = workbook.getSheetAt(0);
         XSSFRow row;
         XSSFCell cell;
