@@ -34,7 +34,7 @@ public class Controller {
         
         for(int i=0; i<5; i++){
             for(int j=0; j<8; j++){
-                System.out.println(semesterTable.table[i][j] + " ");
+                System.out.print(semesterTable.table[i][j] + " ");
             }
         }
     }
