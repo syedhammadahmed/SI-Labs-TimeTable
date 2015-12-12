@@ -7,29 +7,28 @@
  */
 package timetable.dal;
 
+import timetable.bo.TableStruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-//import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-//import java.io.FileNotFoundException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import static timetable.utility.Constants.NUMBER_OF_SHEETS;
 
 /**
  *
  * @author Qureshi
  */
 public class XLSXReader implements Reader {
+
     public boolean read(TableStruct _semesterTable) {
-        
+
         File file = new File("CS1A.xlsx");
-    //            FileInputStream input = new FileInputStream(file);
         XSSFWorkbook workbook = null;
         try {
             workbook = new XSSFWorkbook(new FileInputStream(file));
@@ -38,7 +37,6 @@ public class XLSXReader implements Reader {
         }
 
         XSSFSheet semesterSheet = null;
-//        semesterSheet = workbook.getSheetAt(0);
         XSSFRow row;
         XSSFCell cell;
         int firstCell = 0;
@@ -46,47 +44,70 @@ public class XLSXReader implements Reader {
         int firstRow = 0;
         int lastRow = 0;
 
-
-        for(int iSheet=0; iSheet<workbook.getNumberOfSheets(); iSheet++){
+        for (int iSheet = 0; iSheet < workbook.getNumberOfSheets(); iSheet++) {
             semesterSheet = workbook.getSheetAt(iSheet);
-            if(semesterSheet!=null){
+            if (semesterSheet != null) {
 
-                _semesterTable.university = 
-                        semesterSheet.getRow(0).getCell(1).getStringCellValue();
-                _semesterTable.department = 
-                        semesterSheet.getRow(1).getCell(1).getStringCellValue();
-                _semesterTable.semester = 
-                        semesterSheet.getRow(2).getCell(1).getStringCellValue();
-                _semesterTable.section = 
-                        semesterSheet.getRow(3).getCell(1).getStringCellValue();
-                _semesterTable.classRoom = 
-                        semesterSheet.getRow(3).getCell(1).getStringCellValue();
+                _semesterTable.university
+                        = semesterSheet.getRow(0).getCell(1).getStringCellValue();
+                _semesterTable.department
+                        = semesterSheet.getRow(1).getCell(1).getStringCellValue();
+                _semesterTable.semester
+                        = semesterSheet.getRow(2).getCell(1).getStringCellValue();
+                _semesterTable.section
+                        = semesterSheet.getRow(3).getCell(1).getStringCellValue();
+                _semesterTable.classRoom
+                        = semesterSheet.getRow(3).getCell(1).getStringCellValue();
+
+
+                
+                //Creates a list of merged region coordinates
+                ArrayList<ArrayList<Integer>> mergedRegions = new ArrayList<>();
+                for (int i = 0; i < semesterSheet.getNumMergedRegions(); i++) {
+                    CellRangeAddress region = semesterSheet.getMergedRegion(i);
+
+                    int mergedCol = region.getFirstColumn();
+                    int mergedRow = region.getFirstRow();
+                    if (((mergedRow >= 6) && (mergedRow <= 10)) && ((mergedCol >= 1) && (mergedCol <= 8))) {
+
+                        ArrayList<Integer> temp = new ArrayList<>();
+                        temp.add(mergedRow);
+                        temp.add(mergedCol);
+                        mergedRegions.add(temp);
+                    }
+                }
 
                 firstRow = 6;
                 lastRow = 10;
-
-                for (int iRow = firstRow; iRow <= lastRow; iRow++){
+                for (int iRow = firstRow; iRow <= lastRow; iRow++) {
                     row = semesterSheet.getRow(iRow);
 
-                    if(row!=null){
+                    if (row != null) {
                         firstCell = 1;
                         lastCell = 8;
 
-                        for(int iCell = firstCell; iCell < lastCell; iCell++){
-                            cell = row.getCell(iCell);
-                            _semesterTable.table[iRow-6][iCell-1] = cell.getStringCellValue();
-
-
+                        for (int iCell = firstCell; iCell < lastCell; iCell++) {
+                            ArrayList<Integer> temp = new ArrayList<>();
+                            temp.add(iRow);
+                            temp.add(iCell);
+                            //If this is a merged cell, fill two cells with the same value and increment iCell
+                            if (mergedRegions.contains(temp)) {
+                                cell = row.getCell(iCell);
+                                String tempStr = cell.getStringCellValue();
+                                _semesterTable.table[iRow - 6][iCell - 1] = tempStr;
+                                _semesterTable.table[iRow - 6][iCell] = tempStr;
+                                iCell++;
+                            } else {
+                                cell = row.getCell(iCell);
+                                _semesterTable.table[iRow - 6][iCell - 1] = cell.getStringCellValue();
+                            }
 
                         }
                     }
                 }
             }
-
         }
-    return true;
+        return true;
 
     }
 }
-    
-    

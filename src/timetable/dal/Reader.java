@@ -7,6 +7,8 @@
  */
 package timetable.dal;
 
+import timetable.bo.TableStruct;
+
 /**
  * An interface for different readers for the two different file types such i.e.
  * .xlsx and .xls.
