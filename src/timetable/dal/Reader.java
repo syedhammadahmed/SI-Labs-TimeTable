@@ -6,6 +6,8 @@
 package timetable.dal;
 
 /**
+ * An interface for different readers for the two different file types such i.e.
+ * .xlsx and .xls.
  *
  * @author Qureshi
  */
