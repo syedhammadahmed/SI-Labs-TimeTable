@@ -8,6 +8,10 @@ package timetable.view;
 import timetable.controller.Controller;
 
 /**
+ * This tester can be used to test the controller's collateData()
+ * and printTest() functions. It reads the .xlsx file into a table
+ * structure owned by controller (to be written to file using the
+ * XLSXWriter class). The resulting TableStruct is printed to console.
  *
  * @author Qureshi
  */
