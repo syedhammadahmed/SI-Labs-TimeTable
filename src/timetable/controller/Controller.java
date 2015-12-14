@@ -7,8 +7,10 @@
  */
 package timetable.controller;
 
+import java.io.IOException;
 import timetable.dal.Reader;
 import timetable.bo.TableStruct;
+import timetable.dal.PersistentWriter;
 import timetable.dal.XLSXReader;
 
 /**
@@ -49,5 +51,15 @@ public class Controller {
             }
         }
     }
+    
+    public boolean saveData() throws IOException{
+        PersistentWriter writer = new PersistentWriter();
+        return writer.writeObject(semesterTable);
+    }
+    
+    
+    
+    
+    
 
 }

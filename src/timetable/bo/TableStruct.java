@@ -7,11 +7,13 @@
  */
 package timetable.bo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Qureshi
  */
-public class TableStruct {
+public class TableStruct implements Serializable{
     
     public String university;
     public String department;
@@ -20,7 +22,7 @@ public class TableStruct {
     public String classRoom;
     public String[][] table;
     
-    public TableStruct(int _rows, int _columns){
+    public TableStruct(int _rows, int _columns) {
         this.university = "";
         this.department = "";
         this.semester = "";
