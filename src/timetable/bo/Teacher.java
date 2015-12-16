@@ -7,10 +7,15 @@
  */
 package timetable.bo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Qureshi
  */
 public class Teacher {
+    private String firstName;
+    private String lastName;
+    public ArrayList<Course> courseList;
     
 }

@@ -24,9 +24,9 @@ import timetable.bo.TableStruct;
  * @author Qureshi
  */
 public class PersistentWriter {
-    public boolean writeObject(TableStruct _semesterTable) throws FileNotFoundException, IOException{
-        BufferedOutputStream buffer = null;
-        ObjectOutputStream objectOut = null;
+    public boolean writeTableObject(TableStruct _semesterTable) throws FileNotFoundException, IOException{
+        BufferedOutputStream buffer;
+        ObjectOutputStream objectOut;
         try {
             FileOutputStream fout = null;
             switch(_semesterTable.semester){

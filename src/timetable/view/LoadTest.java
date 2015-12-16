@@ -1,12 +1,14 @@
 /*
  * Suffa Innovation Labs - Time Table
- *
+ * 
  * A Unified Time Table and Calendar app.
  *
  * SI Labs (2015)
  */
 package timetable.view;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import timetable.controller.Controller;
 
 /**
@@ -17,16 +19,16 @@ import timetable.controller.Controller;
  *
  * @author Qureshi
  */
-public class ReaderTest {
+public class LoadTest {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) 
+            throws IOException, FileNotFoundException, ClassNotFoundException {
         Controller controller = new Controller();
-        if (controller.collateData()) {
-            System.out.println("Collated!!");
+        if (controller.loadFiles()) {
+            System.out.println("Loaded!!");
         } else {
-            System.out.println("Collate Fail!!");
+            System.out.println("Load Fail!!");
         }
-
         controller.printTest();
 
     }

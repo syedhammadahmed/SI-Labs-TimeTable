@@ -7,7 +7,10 @@
  */
 package timetable.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import timetable.bl.CourseBL;
+import timetable.bl.TableStructBL;
 import timetable.dal.Reader;
 import timetable.bo.TableStruct;
 import timetable.dal.PersistentWriter;
@@ -18,44 +21,44 @@ import timetable.dal.XLSXReader;
  * @author Qureshi
  */
 public class Controller {
-
-    private Reader reader;
-    private TableStruct semesterTable;
-
-    public boolean collateData() {
-        semesterTable = new TableStruct(5, 8);  //5 days, 8 time-slots each
-        reader = new XLSXReader();
-        //Read into semesterTable
-        if (reader.read(semesterTable)) {
-            System.out.println("Table Read!!");
-        } else {
-            System.out.println("Read Fail!!");
-        }
-
+    TableStructBL tbl; 
+    CourseBL cbl;
+    
+    public boolean loadFiles(){
+        tbl = new TableStructBL();
+        tbl.readFile();
+        tbl.writeData();
         return true;
-    }
-
-    public void printTest() {
-        System.out.println(semesterTable.university);
-        System.out.println(semesterTable.department);
-        System.out.println(semesterTable.semester);
-        System.out.println(semesterTable.section);
-        System.out.println(semesterTable.classRoom);
-
-        for (int i = 0; i < 5; i++) {
-            System.out.println("Someday");
-            for (int j = 0; j < 8; j++) {
-                System.out.println("____");
-                System.out.println(semesterTable.table[i][j] + " ");
-                System.out.println("___********___");
-            }
-        }
+        
     }
     
-    public boolean saveData() throws IOException{
-        PersistentWriter writer = new PersistentWriter();
-        return writer.writeObject(semesterTable);
+    public void printTest() throws IOException, FileNotFoundException, ClassNotFoundException {
+        cbl = new CourseBL();
+        cbl.readTables();
+        cbl.printTest();
     }
+
+//    private Reader reader;
+//    private TableStruct tbl.semesterTable;
+//    public boolean collateData() {
+//        tbl.semesterTable = new TableStruct(5, 8);  //5 days, 8 time-slots each
+//        reader = new XLSXReader();
+//        //Read into tbl.semesterTable
+//        if (reader.read(tbl.semesterTable)) {
+//            System.out.println("Table Read!!");
+//        } else {
+//            System.out.println("Read Fail!!");
+//        }
+//
+//        return true;
+//    }
+
+    
+    
+//    public boolean saveData() throws IOException{
+//        PersistentWriter writer = new PersistentWriter();
+//        return writer.writeObject(tbl.getSemesterTable());
+//    }
     
     
     

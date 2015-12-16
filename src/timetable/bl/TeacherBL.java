@@ -5,12 +5,12 @@
  *
  * SI Labs (2015)
  */
-package timetable.translator;
+package timetable.bl;
 
 /**
  *
  * @author Qureshi
  */
-public class XLSXTranslator {
+public class TeacherBL {
     
 }
