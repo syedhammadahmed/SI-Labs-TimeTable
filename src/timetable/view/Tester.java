@@ -5,6 +5,7 @@
  */
 package timetable.view;
 
+import java.io.IOException;
 import timetable.controller.Controller;
 
 /**
@@ -12,7 +13,7 @@ import timetable.controller.Controller;
  * @author Qureshi
  */
 public class Tester {
-    public static void main(String[] args ){
+    public static void main(String[] args ) throws IOException{
         Controller controller = new Controller();
         controller.loadSchedule();
         controller.printTest();
