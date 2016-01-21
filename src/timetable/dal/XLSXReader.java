@@ -26,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class XLSXReader implements Reader {
 
+    @Override
     public boolean read(TableStruct _semesterTable) {
 
         File file = new File("CS1A.xlsx");
