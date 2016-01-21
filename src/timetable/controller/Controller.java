@@ -1,68 +1,39 @@
 /*
- * Suffa Innovation Labs - Time Table
- *
- * A Unified Time Table and Calendar app.
- *
- * SI Labs (2015)
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package timetable.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import timetable.bl.CourseBL;
-import timetable.bl.TableStructBL;
-import timetable.dal.Reader;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import timetable.bo.TableStruct;
-import timetable.dal.PersistentWriter;
-import timetable.dal.XLSXReader;
-
+import timetable.dal.*;
+//import timetable.dal.ScheduleReader;
+ 
 /**
  *
  * @author Qureshi
  */
 public class Controller {
-    TableStructBL tbl; 
-    CourseBL cbl;
-    
-    public boolean loadFiles(){
-        tbl = new TableStructBL();
-        tbl.readFile();
-        tbl.writeData();
-        return true;
-        
+    private TableStruct[] semesterTables; 
+    private XSSFWorkbook workbook;
+//    private Reader = new ScheduleReader();
+    public boolean loadSchedule(){
+//        semesterTables = new TableStruct[15];
+         
+        for(int i=0; i<15; i++){
+            semesterTables[i] = new TableStruct(5, 8);
+        }
+        ScheduleReader reader = new ScheduleReader();
+        return reader.read(semesterTables);
     }
     
-    public void printTest() throws IOException, FileNotFoundException, ClassNotFoundException {
-        cbl = new CourseBL();
-        cbl.readTables();
-        cbl.printTest();
+    public void printTest(){
+        for(int i=0; i<5; i++){
+            for(int j=0; j<8; j++){
+                System.out.print(semesterTables[0].altTable[i][j]);
+                System.out.println("\n");
+            }
+        }
     }
-
-//    private Reader reader;
-//    private TableStruct tbl.semesterTable;
-//    public boolean collateData() {
-//        tbl.semesterTable = new TableStruct(5, 8);  //5 days, 8 time-slots each
-//        reader = new XLSXReader();
-//        //Read into tbl.semesterTable
-//        if (reader.read(tbl.semesterTable)) {
-//            System.out.println("Table Read!!");
-//        } else {
-//            System.out.println("Read Fail!!");
-//        }
-//
-//        return true;
-//    }
-
-    
-    
-//    public boolean saveData() throws IOException{
-//        PersistentWriter writer = new PersistentWriter();
-//        return writer.writeObject(tbl.getSemesterTable());
-//    }
-    
-    
-    
-    
-    
-
 }

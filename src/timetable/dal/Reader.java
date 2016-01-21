@@ -16,5 +16,5 @@ import timetable.bo.TableStruct;
  * @author Qureshi
  */
 public interface Reader {
-    public boolean read(TableStruct _semesterTable);
+    public boolean read(TableStruct[] _semesterTable);
 }
