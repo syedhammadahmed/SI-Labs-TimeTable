@@ -16,6 +16,6 @@ import java.util.ArrayList;
 public class Teacher {
     private String firstName;
     private String lastName;
-    public ArrayList<Course> courseList;
+    public ArrayList<CourseStruct> courseList;
     
 }

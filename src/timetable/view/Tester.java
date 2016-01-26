@@ -6,6 +6,7 @@
 package timetable.view;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import timetable.controller.Controller;
 
 /**
@@ -13,10 +14,15 @@ import timetable.controller.Controller;
  * @author Qureshi
  */
 public class Tester {
-    public static void main(String[] args ) throws IOException{
+    public static void main(String[] args ) throws IOException, SQLException{
         Controller controller = new Controller();
+        controller.clearDataBase();
+        controller.loadCourseInfo();
         controller.loadSchedule();
-        controller.printTest();
+        controller.writeCourseInfo();
+        
+//        controller.fetchTimeSlots();
+//        controller.printTest();
         
     }
 }

@@ -17,7 +17,7 @@ public class Student {
     private String studentID;
     private String FirstName;
     private String LastName;
-    public ArrayList<Course> courseList;
+    public ArrayList<CourseStruct> courseList;
 
     public Student(String studentID, String FirstName, String LastName) {
         this.studentID = studentID;

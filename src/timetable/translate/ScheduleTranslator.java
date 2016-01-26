@@ -20,7 +20,7 @@ import timetable.bo.TableStruct;
  *
  * @author Qureshi
  */
-public class TableStructTranslator {
+public class ScheduleTranslator {
     public boolean convertToTableStruct(XSSFWorkbook workbook, TableStruct[] semesterTables){
         XSSFSheet[] semesterSheets = new XSSFSheet[workbook.getNumberOfSheets()];
         XSSFRow[] row = new XSSFRow[workbook.getNumberOfSheets()];
