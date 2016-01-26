@@ -21,7 +21,8 @@ import timetable.bo.TableStruct;
  * @author Qureshi
  */
 public class ScheduleTranslator {
-    public boolean convertToTableStruct(XSSFWorkbook workbook, TableStruct[] semesterTables){
+
+    public boolean convertToTableStruct(XSSFWorkbook workbook, TableStruct[] semesterTables) {
         XSSFSheet[] semesterSheets = new XSSFSheet[workbook.getNumberOfSheets()];
         XSSFRow[] row = new XSSFRow[workbook.getNumberOfSheets()];
         XSSFCell[] cell = new XSSFCell[workbook.getNumberOfSheets()];
@@ -29,7 +30,7 @@ public class ScheduleTranslator {
         int lastCell = 8;
         int firstRow = 6;
         int lastRow = 10;
-        
+
         for (int iSheet = 0; iSheet < workbook.getNumberOfSheets(); iSheet++) {
             semesterSheets[iSheet] = workbook.getSheetAt(iSheet);
             if (semesterSheets[iSheet] != null) {
@@ -98,7 +99,7 @@ public class ScheduleTranslator {
                                 String currentStr = cell[iSheet].getStringCellValue();
                                 semesterTables[iSheet].altTable[physRow][physCol] = currentStr;
                                 physCol++;
-                                semesterTables[iSheet].altTable[physRow][physCol] = currentStr;                                
+                                semesterTables[iSheet].altTable[physRow][physCol] = currentStr;
                                 iCell++;
                             } else {
                                 cell[iSheet] = row[iSheet].getCell(iCell);
@@ -135,7 +136,27 @@ public class ScheduleTranslator {
         }
         return true;
     }
-    
+
+    public boolean parseSchedule(TableStruct[] semesterTables) {
+//        TableStruct[] temp = new TableStruct[semesterTables.length];
+
+        for (int i = 0; i < semesterTables.length; i++) {
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < 8; k++) {
+                    if (semesterTables[i].table[j][k].contains(" L ")) {
+                        semesterTables[i].table[j][k] = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].table[j][k].split(" ")[1].split("SEC ")[1];
+                        semesterTables[i].altTable[j][k] = semesterTables[i].altTable[j][k].split(" ")[0];
+                    }
+                    semesterTables[i].table[j][k] = semesterTables[i].table[j][k].split(" ")[0];
+                    semesterTables[i].altTable[j][k] = semesterTables[i].altTable[j][k].split(" ")[0];
+
+                }
+
+            }
+        }
+        return true;
+    }
+
 //    public static Comparator<CellStruct> comparator = new Comparator<CellStruct>() {
 //
 //        @Override
@@ -158,10 +179,4 @@ public class ScheduleTranslator {
 //        }
 //
 //    };
-        
 }
-
-        
-
-
-    

@@ -23,6 +23,9 @@ public class CourseInfoTranslator {
         
         XSSFCell cell;
         for(Row row : courseInfoSheet){
+            
+            
+            
             CourseStruct tempCourseStruct = new CourseStruct();
             tempCourseStruct.courseNumber = row.getCell(0).getStringCellValue();
             tempCourseStruct.courseTitle = row.getCell(1).getStringCellValue();

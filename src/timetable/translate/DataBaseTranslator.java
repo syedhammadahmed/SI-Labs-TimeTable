@@ -6,8 +6,10 @@
 package timetable.translate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import timetable.bo.CourseStruct;
+import timetable.bo.CourseTimeSlotStruct;
 import timetable.bo.TableStruct;
 
 /**
@@ -16,7 +18,7 @@ import timetable.bo.TableStruct;
  */
 public class DataBaseTranslator {
 
-    public List<String> convertToInsertStatements(TableStruct[] semesterTables) {
+    public List<String> convertToTimeSlotInsertStatements(TableStruct[] semesterTables) {
         List<String> instructions = null;
         String course;
         for (int i = 0; i <= semesterTables.length; i++) {
@@ -31,7 +33,7 @@ public class DataBaseTranslator {
         return instructions;
     }
 
-    public List<String> convertToInsertStatements(List<CourseStruct> coursesInfo) {
+    public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo) {
         List<String> instructions = new ArrayList<>();
         String course;
         
@@ -42,7 +44,8 @@ public class DataBaseTranslator {
                     + coursesInfo.get(i).courseNumber + "', '"
                     + coursesInfo.get(i).courseTitle + "')";
             instructions.add(temp);
-        }
+        }       
+        
        
 //        instructions.remove(0);
 //        "INSERT INTO example1 (descr,number,date0)  VALUES( 'Show must go off',-1110.55446,#11/22/2003 10:42:58 PM#)");
@@ -55,6 +58,28 @@ public class DataBaseTranslator {
 //                }
 //            }
 //        }
+        return instructions;
+    }
+    
+    public List<String> convertToTeacherInsertStatements(List<CourseStruct> coursesInfo){
+        List<String> teacherList;
+        List<String> instructions = new ArrayList<>();
+        HashSet<String> teacherSet = new HashSet<>();
+        for(int i=1; i<coursesInfo.size(); i++){
+            if(coursesInfo.get(i).teacher!=""){
+                teacherSet.add(coursesInfo.get(i).teacher);
+            }
+        }
+        teacherList = new ArrayList(teacherSet);
+        for(int i=0; i<teacherList.size(); i++){
+            if(teacherList.get(i)!=""){
+                String temp = "INSERT into TEACHER (TID, TName) VALUES ("
+                    + (i+1) + ", '"
+                    + teacherList.get(i) + "')";
+                instructions.add(temp);
+            }
+            
+        }
         return instructions;
     }
 

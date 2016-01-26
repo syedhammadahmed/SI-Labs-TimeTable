@@ -18,7 +18,7 @@ public class Tester {
         Controller controller = new Controller();
         controller.clearDataBase();
         controller.loadCourseInfo();
-        controller.loadSchedule();
+//        controller.loadSchedule();
         controller.writeCourseInfo();
         
 //        controller.fetchTimeSlots();

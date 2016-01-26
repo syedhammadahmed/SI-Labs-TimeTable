@@ -60,7 +60,7 @@ public class Controller {
         
         workbook = cReader.read();
         cTranslator.convertToCourseStruct(workbook, coursesInfo);
-        courseInsertStatements = dbTranslator.convertToInsertStatements(coursesInfo);
+        courseInsertStatements = dbTranslator.convertToTeacherInsertStatements(coursesInfo);
         return true;
     }
     
@@ -73,6 +73,7 @@ public class Controller {
     public boolean loadSchedule() throws IOException{
         workbook = sReader.read();
         sTranslator.convertToTableStruct(workbook, semesterTables);
+        sTranslator.parseSchedule(semesterTables);
         
 //        if(reader.read(workbook)){        
 //            return translator.convertToTableStruct(workbook, semesterTables);
@@ -80,19 +81,28 @@ public class Controller {
         return true;
     }
     
-    
-    
-    public boolean fetchTimeSlots() throws SQLException{
-        return dbReader.queryTest();
+    public boolean writeSchedule() throws SQLException{
+        dbWriter.runInsertStatements(courseInsertStatements);
+        
+        return true;
     }
     
     
-    public void printTest(){
-        for(int i=0; i<5; i++){
-            for(int j=0; j<8; j++){
-                System.out.print(semesterTables[0].table[i][j]);
-                System.out.println("\n");
-            }
-        }
-    }
+//    
+//    public boolean fetchTimeSlots() throws SQLException{
+//        return dbReader.queryTest();
+//    }
+//    
+//    
+//    public void printTest(){
+//        for(int i=0; i<5; i++){
+//            for(int j=0; j<8; j++){
+//                System.out.print(semesterTables[0].table[i][j]);
+//                System.out.println("\n");
+//            }
+//        }
+//    }
+    
+    
+    
 }
