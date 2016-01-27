@@ -18,31 +18,32 @@ import timetable.bo.TableStruct;
  */
 public class DataBaseTranslator {
 
-    public List<String> convertToTimeSlotInsertStatements(TableStruct[] semesterTables) {
-        List<String> instructions = null;
-        String course;
-        for (int i = 0; i <= semesterTables.length; i++) {
-            for (int j = 0; j < 5; j++) {
-                for (int k = 0; k < 8; k++) {
-                    course = semesterTables[i].table[j][k].substring(0, 5);
-                    instructions.add("INSERT into ");
-                }
-            }
-        }
+//    public List<String> convertToTimeSlotInsertStatements(TableStruct[] semesterTables) {
+//        List<String> instructions = null;
+//        String course;
+//        for (int i = 0; i <= semesterTables.length; i++) {
+//            for (int j = 0; j < 5; j++) {
+//                for (int k = 0; k < 8; k++) {
+//                    course = semesterTables[i].table[j][k].substring(0, 5);
+//                    instructions.add("INSERT into ");
+//                }
+//            }
+//        }
+//
+//        return instructions;
+//    }
 
-        return instructions;
-    }
-
-    public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo) {
+    public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo, List<String> teacherList) {
         List<String> instructions = new ArrayList<>();
         String course;
         
 
         for(int i=1; i<coursesInfo.size(); i++){
-            String temp = "INSERT into COURSE (CNo, CCode, CName) VALUES ("
+            String temp = "INSERT into COURSE (CNo, CCode, CName, TID_FK) VALUES ("
                     + (i) + ", '"
-                    + coursesInfo.get(i).courseNumber + "', '"
-                    + coursesInfo.get(i).courseTitle + "')";
+                    + coursesInfo.get(i).courseCode + "', '"
+                    + coursesInfo.get(i).courseTitle + "', "
+                    + (teacherList.indexOf(coursesInfo.get(i).teacher)+1) + ")";
             instructions.add(temp);
         }       
         
@@ -61,18 +62,18 @@ public class DataBaseTranslator {
         return instructions;
     }
     
-    public List<String> convertToTeacherInsertStatements(List<CourseStruct> coursesInfo){
-        List<String> teacherList;
+    public List<String> convertToTeacherInsertStatements(List<CourseStruct> coursesInfo, List<String> teacherList){
+        
         List<String> instructions = new ArrayList<>();
         HashSet<String> teacherSet = new HashSet<>();
         for(int i=1; i<coursesInfo.size(); i++){
-            if(coursesInfo.get(i).teacher!=""){
+            if(!"".equals(coursesInfo.get(i).teacher)){
                 teacherSet.add(coursesInfo.get(i).teacher);
             }
         }
-        teacherList = new ArrayList(teacherSet);
+        teacherList.addAll(teacherSet);
         for(int i=0; i<teacherList.size(); i++){
-            if(teacherList.get(i)!=""){
+            if(!"".equals(teacherList.get(i))){
                 String temp = "INSERT into TEACHER (TID, TName) VALUES ("
                     + (i+1) + ", '"
                     + teacherList.get(i) + "')";

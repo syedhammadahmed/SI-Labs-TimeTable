@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * @author Qureshi
  */
 public class CourseStruct {
-    public String courseNumber;
+    public String courseCode;
     public String courseTitle;
     public String batch;
     public String teacher;
 
     public CourseStruct() {
-        this.courseNumber = "";
+        this.courseCode = "";
         this.courseTitle = "";
         this.batch = "";
         this.teacher = "";

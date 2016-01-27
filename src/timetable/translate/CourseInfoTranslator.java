@@ -27,7 +27,7 @@ public class CourseInfoTranslator {
             
             
             CourseStruct tempCourseStruct = new CourseStruct();
-            tempCourseStruct.courseNumber = row.getCell(0).getStringCellValue();
+            tempCourseStruct.courseCode = row.getCell(0).getStringCellValue();
             tempCourseStruct.courseTitle = row.getCell(1).getStringCellValue();
             tempCourseStruct.batch = row.getCell(2).getStringCellValue();
             if(row.getCell(3)!=null){

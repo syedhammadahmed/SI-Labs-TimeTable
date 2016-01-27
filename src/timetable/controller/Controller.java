@@ -34,6 +34,8 @@ public class Controller {
     private DataBaseTranslator dbTranslator;
     private List<String> courseInsertStatements;
 //    private Reader = new ScheduleReader();
+    private List<String> teacherInsertStatements;
+    private List<String> teacherList;
     
     public Controller() throws SQLException{
         semesterTables = new TableStruct[15];
@@ -50,6 +52,7 @@ public class Controller {
         dbReader = new DataBaseReader();
         dbWriter = new DataBaseWriter();
         dbTranslator = new DataBaseTranslator();
+        teacherList = new ArrayList<>();
     }
     
     public boolean clearDataBase() throws SQLException{
@@ -59,8 +62,8 @@ public class Controller {
     public boolean loadCourseInfo() throws IOException{
         
         workbook = cReader.read();
-        cTranslator.convertToCourseStruct(workbook, coursesInfo);
-        courseInsertStatements = dbTranslator.convertToTeacherInsertStatements(coursesInfo);
+//        cTranslator.convertToCourseStruct(workbook, coursesInfo);
+        courseInsertStatements = dbTranslator.convertToCourseInsertStatements(coursesInfo, teacherList);
         return true;
     }
     
@@ -69,6 +72,21 @@ public class Controller {
         
         return true;
     }
+    
+    public boolean loadTeacherInfo() throws IOException{
+        
+        workbook = cReader.read();
+        cTranslator.convertToCourseStruct(workbook, coursesInfo);
+        teacherInsertStatements = dbTranslator.convertToTeacherInsertStatements(coursesInfo, teacherList);
+        return true;
+    }
+    
+    public boolean writeTeacherInfo() throws SQLException{
+        dbWriter.runInsertStatements(teacherInsertStatements);
+        
+        return true;
+    }
+    
     
     public boolean loadSchedule() throws IOException{
         workbook = sReader.read();
