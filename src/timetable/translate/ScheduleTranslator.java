@@ -14,7 +14,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import timetable.bo.CellStruct;
+import timetable.bo.CourseTimeSlotStruct;
 import timetable.bo.TableStruct;
+import timetable.utility.Constants;
 
 /**
  *
@@ -137,46 +139,98 @@ public class ScheduleTranslator {
         return true;
     }
 
-    public boolean parseSchedule(TableStruct[] semesterTables) {
+    public List<CourseTimeSlotStruct> parseSchedule(TableStruct[] semesterTables, List<String> courseList) {
 //        TableStruct[] temp = new TableStruct[semesterTables.length];
-
-        for (int i = 0; i < semesterTables.length; i++) {
+        List<CourseTimeSlotStruct> courseTimesList = new ArrayList<>();
+        CourseTimeSlotStruct tempCTS;
+//        int temp = Constants.NUMBER_OF_SHEETS;
+        for (int i = 0; i < Constants.NUMBER_OF_SHEETS; i++) {
             for (int j = 0; j < 5; j++) {
                 for (int k = 0; k < 8; k++) {
-                    if (semesterTables[i].table[j][k].contains(" L ")) {
-                        semesterTables[i].table[j][k] = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].table[j][k].split(" ")[1].split("SEC ")[1];
-                        semesterTables[i].altTable[j][k] = semesterTables[i].altTable[j][k].split(" ")[0];
+                    tempCTS = new CourseTimeSlotStruct();
+                    //Generating CourseCode
+                    if ((semesterTables[i].section.length()) == 4) {        //No sections in batch name i.e. CS-3
+                        if (!semesterTables[i].table[j][k].equals("")) {      //if not empty
+                            tempCTS.courseCode = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].section.charAt(3);
+                            if (semesterTables[i].table[j][k].contains(" L ")) {  //if LAB ourse
+                                tempCTS.courseCode += "-L";
+                            }
+                        }
+                        if (!semesterTables[i].altTable[j][k].equals("")) {
+                            tempCTS.altCourseCode = semesterTables[i].altTable[j][k].split(" ")[0] + semesterTables[i].section.charAt(3);
+                            if (semesterTables[i].altTable[j][k].contains(" L ")) {
+                                tempCTS.altCourseCode += "-L";
+                            }
+                        }
+
+                    } else {      //Batch with sections i.e. CS-2A
+                        if (!semesterTables[i].table[j][k].equals("")) {      //if not empty
+                            tempCTS.courseCode = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].section.charAt(4);
+                            if (semesterTables[i].table[j][k].contains(" L ")) {  //if LAB ourse
+                                tempCTS.courseCode += "-L";
+                                if (semesterTables[i].table[j][k].contains("SEC")) {
+                                    tempCTS.courseCode += semesterTables[i].table[j][k].split("SEC ")[1].charAt(1);
+                                }
+
+                            }
+                        }
+                        if (!semesterTables[i].altTable[j][k].equals("")) {
+                            tempCTS.altCourseCode = semesterTables[i].altTable[j][k].split(" ")[0] + semesterTables[i].section.charAt(4);
+                            if (semesterTables[i].altTable[j][k].contains(" L ")) {
+                                tempCTS.altCourseCode += "-L";
+                                if (semesterTables[i].altTable[j][k].contains("SEC")) {
+                                    tempCTS.altCourseCode += semesterTables[i].altTable[j][k].split("SEC ")[1].charAt(1);
+                                }
+                            }
+                        }
                     }
-                    semesterTables[i].table[j][k] = semesterTables[i].table[j][k].split(" ")[0];
-                    semesterTables[i].altTable[j][k] = semesterTables[i].altTable[j][k].split(" ")[0];
+                    //CourseCode to CourseNo
+                    if (!tempCTS.courseCode.equals("") || !tempCTS.altCourseCode.equals("")) {
+                        if(!tempCTS.courseCode.equals("")){
+                            tempCTS.courseNo = courseList.indexOf(tempCTS.courseCode) + 1;
+                        }
+                        if (!tempCTS.altCourseCode.equals("")) {
+                            tempCTS.altCourseNo = courseList.indexOf(tempCTS.altCourseCode) + 1;
+                        }
+                        courseTimesList.add(tempCTS);
+                    }
+                    //Room Number(String) Extraction
+                    if ((semesterTables[i].table[j][k].contains("FF-"))
+                            || (semesterTables[i].table[j][k].contains("GF-"))
+                            || (semesterTables[i].table[j][k].contains("SF-"))) {
+                        if ((semesterTables[i].table[j][k].contains("FF-"))) {
+                            tempCTS.roomNoStr = "FF-" + semesterTables[i].table[j][k].split("FF-")[1].substring(0, 3);
+                        }
+                        if ((semesterTables[i].table[j][k].contains("GF-"))) {
+                            tempCTS.roomNoStr = "GF-" + semesterTables[i].table[j][k].split("GF-")[1].substring(0, 3);
+                        }
+                        if ((semesterTables[i].table[j][k].contains("SF-"))) {
+                            tempCTS.roomNoStr = "SF-" + semesterTables[i].table[j][k].split("SF-")[1].substring(0, 3);
+                        }
+                        if ((semesterTables[i].altTable[j][k].contains("FF-"))) {
+                            tempCTS.altRoomNoStr = "FF-" + semesterTables[i].altTable[j][k].split("FF-")[1].substring(0, 3);
+                        }
+                        if ((semesterTables[i].altTable[j][k].contains("GF-"))) {
+                            tempCTS.altRoomNoStr = "GF-" + semesterTables[i].altTable[j][k].split("GF-")[1].substring(0, 3);
+                        }
+                        if ((semesterTables[i].altTable[j][k].contains("SF-"))) {
+                            tempCTS.altRoomNoStr = "SF-" + semesterTables[i].altTable[j][k].split("SF-")[1].substring(0, 3);
+                        }
+                    }else{
+                        tempCTS.roomNoStr = semesterTables[i].section.substring(
+                                semesterTables[i].section.indexOf("[")+1, 
+                                semesterTables[i].section.indexOf("]"));
+//                        tempCTS.altRoomNoStr = semesterTables[i].section.substring(
+//                                semesterTables[i].section.indexOf("[")+1, 
+//                                semesterTables[i].section.indexOf("]"));
+                    }
 
                 }
-
             }
+
         }
-        return true;
+
+        return courseTimesList;
     }
 
-//    public static Comparator<CellStruct> comparator = new Comparator<CellStruct>() {
-//
-//        @Override
-//        public int compare(CellStruct c1, CellStruct c2) {
-//            if (c1.row < c2.row) {
-//                return -1;
-//            } else if (c1.row > c2.row) {
-//                return 1;
-//            } else if (c1.row == c2.row) {
-//                if (c1.column < c2.column) {
-//                    return -1;
-//                } else if (c1.column > c2.column) {
-//                    return 1;
-//                } else {
-//                    return 0;
-//                }
-//            }
-//            return 0;
-//
-//        }
-//
-//    };
 }

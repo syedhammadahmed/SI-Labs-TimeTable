@@ -18,22 +18,9 @@ import timetable.bo.TableStruct;
  */
 public class DataBaseTranslator {
 
-//    public List<String> convertToTimeSlotInsertStatements(TableStruct[] semesterTables) {
-//        List<String> instructions = null;
-//        String course;
-//        for (int i = 0; i <= semesterTables.length; i++) {
-//            for (int j = 0; j < 5; j++) {
-//                for (int k = 0; k < 8; k++) {
-//                    course = semesterTables[i].table[j][k].substring(0, 5);
-//                    instructions.add("INSERT into ");
-//                }
-//            }
-//        }
-//
-//        return instructions;
-//    }
 
-    public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo, List<String> teacherList) {
+
+    public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo, List<String> courseList, List<String> teacherList) {
         List<String> instructions = new ArrayList<>();
         String course;
         
@@ -45,20 +32,26 @@ public class DataBaseTranslator {
                     + coursesInfo.get(i).courseTitle + "', "
                     + (teacherList.indexOf(coursesInfo.get(i).teacher)+1) + ")";
             instructions.add(temp);
-        }       
+            courseList.add(coursesInfo.get(i).courseCode);
+        }    
+        return instructions;
+    }
+    
+    public List<String> convertToScheduleInsertStatements(List<CourseTimeSlotStruct> coursesInfo){
+        List<String> instructions = new ArrayList<>();
+        String tempCCode;
+        for(int i=0; i<coursesInfo.size(); i++){
+            String temp = "INSERT into COURSE_TIMESLOT (CTSNo, CNo_FK, TSNo_FK, RoomNo_FK) VALUES ("
+                    + (i+1) + ", '"
+                    + coursesInfo.get(i).courseNo + ", "
+                    + coursesInfo.get(i).timeSlotNo + ", "
+                    + coursesInfo.get(i).roomNo + ")";
+            instructions.add(temp);
+            
+            
+        }        
         
-       
-//        instructions.remove(0);
-//        "INSERT INTO example1 (descr,number,date0)  VALUES( 'Show must go off',-1110.55446,#11/22/2003 10:42:58 PM#)");
-//        for(int i=0; i<=coursesInfo.size(); i++){
-//            
-//            for(int j=0; j<5; j++){
-//                for(int k=0; k<8; k++){
-//                    course = semesterTables[i].table[j][k].substring(0, 5);
-//                    instructions.add("INSERT into ");
-//                }
-//            }
-//        }
+        
         return instructions;
     }
     
@@ -84,14 +77,4 @@ public class DataBaseTranslator {
         return instructions;
     }
 
-//    public List<InsertStatement> convertToInsertStatements(TableStruct[] semesterTables){
-//        List<InsertStatement> statements = new ArrayList<>();
-//        for(TableStruct table : semesterTables){
-//            for(int i=0; i<5; i++){
-//                for(int j=0; j<8; j++){
-//                    InsertStatement temp = new InsertStatement();
-//                    temp.setStatement("INSERT into COURSE_TIMESLOT");
-//                }
-//            }
-//        }
 }

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import timetable.utility.Constants;
 
 /**
  *
@@ -20,6 +21,7 @@ public class ScheduleReader{
     public XSSFWorkbook read() throws IOException {
         File file = new File("CSTimeTableSpring2015.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+        Constants.NUMBER_OF_SHEETS = workbook.getNumberOfSheets();
         return workbook;
     }
 }

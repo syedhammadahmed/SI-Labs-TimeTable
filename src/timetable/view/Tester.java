@@ -20,9 +20,9 @@ public class Tester {
         controller.loadTeacherInfo();
         controller.writeTeacherInfo();
         controller.loadCourseInfo();
-        controller.writeCourseInfo();
+//        controller.writeCourseInfo();
         
-//        controller.loadSchedule();
+        controller.loadSchedule();
         
         
         

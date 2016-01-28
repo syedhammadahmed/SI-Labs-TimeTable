@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import timetable.utility.Constants;
 
 /**
  *
@@ -18,6 +19,7 @@ public class CourseInfoReader {
     public XSSFWorkbook read() throws IOException {
         File file = new File("CSCourseTeachers.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+        
         return workbook;
     }
 }

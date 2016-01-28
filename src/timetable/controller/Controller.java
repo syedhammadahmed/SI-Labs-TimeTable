@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import timetable.bo.CourseStruct;
+import timetable.bo.CourseTimeSlotStruct;
 import timetable.bo.TableStruct;
 import timetable.dal.*;
 import timetable.translate.CourseInfoTranslator;
@@ -24,6 +25,7 @@ import timetable.translate.ScheduleTranslator;
 public class Controller {
     private TableStruct[] semesterTables; 
     private List<CourseStruct> coursesInfo;
+    private List<CourseTimeSlotStruct> scheduleInfo;
     private XSSFWorkbook workbook;
     private ScheduleReader sReader;
     private CourseInfoReader cReader;
@@ -36,6 +38,8 @@ public class Controller {
 //    private Reader = new ScheduleReader();
     private List<String> teacherInsertStatements;
     private List<String> teacherList;
+    private List<String> courseList;
+    private int numberOfSheets;
     
     public Controller() throws SQLException{
         semesterTables = new TableStruct[15];
@@ -44,6 +48,7 @@ public class Controller {
             semesterTables[i] = new TableStruct(5, 8);
         }
         coursesInfo = new ArrayList<>();
+        scheduleInfo = new ArrayList<>();
         sReader = new ScheduleReader();
         cReader = new CourseInfoReader();
         sTranslator = new ScheduleTranslator();
@@ -53,6 +58,7 @@ public class Controller {
         dbWriter = new DataBaseWriter();
         dbTranslator = new DataBaseTranslator();
         teacherList = new ArrayList<>();
+        courseList = new ArrayList<>();
     }
     
     public boolean clearDataBase() throws SQLException{
@@ -63,7 +69,8 @@ public class Controller {
         
         workbook = cReader.read();
 //        cTranslator.convertToCourseStruct(workbook, coursesInfo);
-        courseInsertStatements = dbTranslator.convertToCourseInsertStatements(coursesInfo, teacherList);
+        courseInsertStatements = dbTranslator.convertToCourseInsertStatements(coursesInfo, courseList, teacherList);
+        
         return true;
     }
     
@@ -91,7 +98,7 @@ public class Controller {
     public boolean loadSchedule() throws IOException{
         workbook = sReader.read();
         sTranslator.convertToTableStruct(workbook, semesterTables);
-        sTranslator.parseSchedule(semesterTables);
+        scheduleInfo = sTranslator.parseSchedule(semesterTables, courseList);
         
 //        if(reader.read(workbook)){        
 //            return translator.convertToTableStruct(workbook, semesterTables);
