@@ -31,6 +31,7 @@ public class DataBaseWriter {
         s.execute("DELETE * FROM [COURSE]");
         s.execute("DELETE * FROM [COURSE_TIMESLOT]");
         s.execute("DELETE * FROM [TEACHER]");
+        s.execute("DELETE * FROM ROOM");
 //        ResultSet rs = s.executeQuery("SELECT [TimeSlot] FROM [TIMESLOT] WHERE [Day] like 'Wednesday'");
         return true;
     }

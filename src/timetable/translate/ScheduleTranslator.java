@@ -6,6 +6,7 @@
 package timetable.translate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -67,7 +68,6 @@ public class ScheduleTranslator {
                         mergedRegions.add(new CellStruct(region.getFirstRow(), region.getFirstColumn()));
                     }
                 }
-//                mergedRegions.sort(comparator);
 
                 int iRow = firstRow;
                 for (int physRow = 0; physRow < 5; physRow++) {
@@ -149,16 +149,16 @@ public class ScheduleTranslator {
                 for (int k = 0; k < 8; k++) {
                     tempCTS = new CourseTimeSlotStruct();
                     //Generating CourseCode
-                    if ((semesterTables[i].section.length()) == 4) {        //No sections in batch name i.e. CS-3
+                    if ((semesterTables[i].section.split(" ")[0].length()) == 4) {        //No sections in batch name i.e. CS-3
                         if (!semesterTables[i].table[j][k].equals("")) {      //if not empty
-                            tempCTS.courseCode = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].section.charAt(3);
-                            if (semesterTables[i].table[j][k].contains(" L ")) {  //if LAB ourse
+                            tempCTS.courseCode = semesterTables[i].table[j][k].split(" ")[0];
+                            if (semesterTables[i].table[j][k].contains(" L")) {  //if LAB ourse
                                 tempCTS.courseCode += "-L";
                             }
                         }
                         if (!semesterTables[i].altTable[j][k].equals("")) {
-                            tempCTS.altCourseCode = semesterTables[i].altTable[j][k].split(" ")[0] + semesterTables[i].section.charAt(3);
-                            if (semesterTables[i].altTable[j][k].contains(" L ")) {
+                            tempCTS.altCourseCode = semesterTables[i].altTable[j][k].split(" ")[0];
+                            if (semesterTables[i].altTable[j][k].contains(" L")) {
                                 tempCTS.altCourseCode += "-L";
                             }
                         }
@@ -166,7 +166,7 @@ public class ScheduleTranslator {
                     } else {      //Batch with sections i.e. CS-2A
                         if (!semesterTables[i].table[j][k].equals("")) {      //if not empty
                             tempCTS.courseCode = semesterTables[i].table[j][k].split(" ")[0] + semesterTables[i].section.charAt(4);
-                            if (semesterTables[i].table[j][k].contains(" L ")) {  //if LAB ourse
+                            if (semesterTables[i].table[j][k].contains(" L")) {  //if LAB ourse
                                 tempCTS.courseCode += "-L";
                                 if (semesterTables[i].table[j][k].contains("SEC")) {
                                     tempCTS.courseCode += semesterTables[i].table[j][k].split("SEC ")[1].charAt(1);
@@ -176,7 +176,7 @@ public class ScheduleTranslator {
                         }
                         if (!semesterTables[i].altTable[j][k].equals("")) {
                             tempCTS.altCourseCode = semesterTables[i].altTable[j][k].split(" ")[0] + semesterTables[i].section.charAt(4);
-                            if (semesterTables[i].altTable[j][k].contains(" L ")) {
+                            if (semesterTables[i].altTable[j][k].contains(" L")) {
                                 tempCTS.altCourseCode += "-L";
                                 if (semesterTables[i].altTable[j][k].contains("SEC")) {
                                     tempCTS.altCourseCode += semesterTables[i].altTable[j][k].split("SEC ")[1].charAt(1);
@@ -192,7 +192,7 @@ public class ScheduleTranslator {
                         if (!tempCTS.altCourseCode.equals("")) {
                             tempCTS.altCourseNo = courseList.indexOf(tempCTS.altCourseCode) + 1;
                         }
-                        courseTimesList.add(tempCTS);
+                        
                     }
                     //Room Number(String) Extraction
                     if ((semesterTables[i].table[j][k].contains("FF-"))
@@ -224,7 +224,18 @@ public class ScheduleTranslator {
 //                                semesterTables[i].section.indexOf("[")+1, 
 //                                semesterTables[i].section.indexOf("]"));
                     }
+                    //Convert RoomNoStr to RoomNo int.
+                    List<String> roomsList;
+                    roomsList = Arrays.asList(Constants.CLASSROOMS);
+                    tempCTS.roomNo = roomsList.indexOf(tempCTS.roomNoStr);
+                    if(!tempCTS.altCourseCode.equals("")){
+                        tempCTS.altRoomNo = roomsList.indexOf(tempCTS.altRoomNoStr);
+                    }
+                    //Extract TimeSlot
+                    int tempTimeSlot = (j)*8 + k;
+                    tempCTS.timeSlotNo = tempTimeSlot + 1;  //coz db starts at 1
 
+                    courseTimesList.add(tempCTS);
                 }
             }
 

@@ -17,6 +17,7 @@ import timetable.dal.*;
 import timetable.translate.CourseInfoTranslator;
 import timetable.translate.DataBaseTranslator;
 import timetable.translate.ScheduleTranslator;
+import timetable.utility.Constants;
 //import timetable.dal.ScheduleReader; 
 /**
  *
@@ -37,6 +38,8 @@ public class Controller {
     private List<String> courseInsertStatements;
 //    private Reader = new ScheduleReader();
     private List<String> teacherInsertStatements;
+    private List<String> scheduleInsertStatements;
+    private List<String> classRoomInsertStatements;
     private List<String> teacherList;
     private List<String> courseList;
     private int numberOfSheets;
@@ -99,15 +102,27 @@ public class Controller {
         workbook = sReader.read();
         sTranslator.convertToTableStruct(workbook, semesterTables);
         scheduleInfo = sTranslator.parseSchedule(semesterTables, courseList);
-        
+        scheduleInsertStatements = dbTranslator.convertToScheduleInsertStatements(scheduleInfo);
 //        if(reader.read(workbook)){        
 //            return translator.convertToTableStruct(workbook, semesterTables);
 //        }        
         return true;
     }
     
+    public boolean loadClassRooms(){
+        
+        classRoomInsertStatements = dbTranslator.classRoomInsertStatements(Constants.CLASSROOMS);
+        return true;
+    }
+    
+    public boolean writeClassRooms() throws SQLException{
+        
+        dbWriter.runInsertStatements(classRoomInsertStatements);
+        return true;
+    }
+    
     public boolean writeSchedule() throws SQLException{
-        dbWriter.runInsertStatements(courseInsertStatements);
+        dbWriter.runInsertStatements(scheduleInsertStatements);
         
         return true;
     }

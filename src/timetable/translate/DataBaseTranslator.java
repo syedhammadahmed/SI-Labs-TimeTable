@@ -19,6 +19,16 @@ import timetable.bo.TableStruct;
 public class DataBaseTranslator {
 
 
+    public List<String> classRoomInsertStatements(String[] classrooms){
+        List<String> instructions = new ArrayList<>();
+        for(int i=1; i<classrooms.length; i++){
+            String temp = "INSERT into ROOM (RoomNo, RoomName) VALUES ("
+                    + i + ", '"
+                    + classrooms[i] + "')";
+            instructions.add(temp);
+        }
+        return instructions;
+    }
 
     public List<String> convertToCourseInsertStatements(List<CourseStruct> coursesInfo, List<String> courseList, List<String> teacherList) {
         List<String> instructions = new ArrayList<>();
@@ -37,19 +47,42 @@ public class DataBaseTranslator {
         return instructions;
     }
     
-    public List<String> convertToScheduleInsertStatements(List<CourseTimeSlotStruct> coursesInfo){
+    public List<String> convertToScheduleInsertStatements(List<CourseTimeSlotStruct> coursesInfo){ 
         List<String> instructions = new ArrayList<>();
         String tempCCode;
-        for(int i=0; i<coursesInfo.size(); i++){
-            String temp = "INSERT into COURSE_TIMESLOT (CTSNo, CNo_FK, TSNo_FK, RoomNo_FK) VALUES ("
-                    + (i+1) + ", '"
-                    + coursesInfo.get(i).courseNo + ", "
-                    + coursesInfo.get(i).timeSlotNo + ", "
-                    + coursesInfo.get(i).roomNo + ")";
-            instructions.add(temp);
-            
-            
-        }        
+        int i=0;
+        int index = 1;
+        while (i < coursesInfo.size()) {
+            if (!coursesInfo.get(i).courseCode.equals("")) {
+                String temp = "INSERT into COURSE_TIMESLOT (CTSNo, CNo_FK, TSNo_FK, RoomNo_FK) VALUES ("
+                        + index + ", "
+                        + coursesInfo.get(i).courseNo + ", "
+                        + coursesInfo.get(i).timeSlotNo + ", "
+                        + coursesInfo.get(i).roomNo + ")";
+                instructions.add(temp);
+                index++;
+                
+                if (!coursesInfo.get(i).altCourseCode.equals("")) {
+                    temp = "INSERT into COURSE_TIMESLOT (CTSNo, CNo_FK, TSNo_FK, RoomNo_FK) VALUES ("
+                            + index + ", "
+                            + coursesInfo.get(i).altCourseNo + ", "
+                            + coursesInfo.get(i).timeSlotNo + ", "
+                            + coursesInfo.get(i).altRoomNo + ")";
+                    instructions.add(temp);
+                    index++;
+                    i++;
+                }
+                
+            } 
+            i++;
+        }
+//        for (int i = 0; i < coursesInfo.size(); i++) {
+//            
+//
+//            
+//            
+//            
+//        }        
         
         
         return instructions;
