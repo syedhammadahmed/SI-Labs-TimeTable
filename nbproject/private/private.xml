@@ -3,23 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/controller/Controller.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/dal/CourseInfoReader.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/DataBaseTranslator.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/TableStruct.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/CourseInfoTranslator.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/CourseTimeSlotStruct.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/dal/ScheduleReader.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/CellStruct.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/CourseStruct.java</file>
             <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/dal/DataBaseReader.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/TimeSlot.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/controller/Controller.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/DataBaseTranslator.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/CourseInfoTranslator.java</file>
             <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/ScheduleTranslator.java</file>
             <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/dal/DataBaseWriter.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/dal/StudentInfoReader.java</file>
             <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/view/Tester.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/Teacher.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/Student.java</file>
-            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/utility/Constants.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/bo/CourseStruct.java</file>
+            <file>file:/C:/Users/Qureshi/Documents/SI%20Labs/SI-Labs-TimeTable/src/timetable/translate/StudentInfoTranslator.java</file>
         </group>
     </open-files>
 </project-private>

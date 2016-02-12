@@ -24,17 +24,35 @@ public class DataBaseWriter {
         
     }
     
-    public boolean clearTables() throws SQLException{
+    public boolean clearAllTables() throws SQLException{
         Statement s = conn.createStatement();
-//        s.executeUpdate("DROP Table COURSE");
-//        s.execute();
         s.execute("DELETE * FROM [COURSE]");
         s.execute("DELETE * FROM [COURSE_TIMESLOT]");
         s.execute("DELETE * FROM [TEACHER]");
-        s.execute("DELETE * FROM ROOM");
-//        ResultSet rs = s.executeQuery("SELECT [TimeSlot] FROM [TIMESLOT] WHERE [Day] like 'Wednesday'");
+        s.execute("DELETE * FROM [ROOM]");
         return true;
     }
+    
+//    public boolean clearTeacherTable() throws SQLException{
+//        Statement s = conn.createStatement();
+//        s.execute("DELETE * FROM [TEACHER]");        
+//        return true;
+//    }
+//    public boolean clearCourseTable() throws SQLException{
+//        Statement s = conn.createStatement();
+//        s.execute("DELETE * FROM [COURSE]");        
+//        return true;
+//    }
+//    public boolean clearScheduleTable() throws SQLException{
+//        Statement s = conn.createStatement();
+//        s.execute("DELETE * FROM [COURSE_TIMESLOT]");        
+//        return true;
+//    }
+//    public boolean clearRoomTable() throws SQLException{
+//        Statement s = conn.createStatement();
+//        s.execute("DELETE * FROM [ROOM]");        
+//        return true;
+//    }
     
     public boolean runInsertStatements(List<String> instructions) throws SQLException{
         Statement s = conn.createStatement();

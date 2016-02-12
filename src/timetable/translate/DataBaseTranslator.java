@@ -6,10 +6,12 @@
 package timetable.translate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import timetable.bo.CourseStruct;
 import timetable.bo.CourseTimeSlotStruct;
+import timetable.bo.StudentStruct;
 import timetable.bo.TableStruct;
 
 /**
@@ -35,9 +37,9 @@ public class DataBaseTranslator {
         String course;
         
 
-        for(int i=1; i<coursesInfo.size(); i++){
+        for(int i=0; i<coursesInfo.size(); i++){
             String temp = "INSERT into COURSE (CNo, CCode, CName, TID_FK) VALUES ("
-                    + (i) + ", '"
+                    + (i+1) + ", '"
                     + coursesInfo.get(i).courseCode + "', '"
                     + coursesInfo.get(i).courseTitle + "', "
                     + (teacherList.indexOf(coursesInfo.get(i).teacher)+1) + ")";
@@ -107,6 +109,42 @@ public class DataBaseTranslator {
             }
             
         }
+        return instructions;
+    }
+
+    public List<String> convertToStudentInsertStatements(HashMap<String, String> studentsInfo, List<String> studentList) {
+
+        List<String> instructions = new ArrayList<>();
+        studentList.addAll(studentsInfo.keySet());
+        for(String temp : studentList){
+            temp = temp.substring(0, 8);
+        }
+        for (int i = 0; i < studentList.size(); i++) {
+            String temp = "INSERT into STUDENT (SID, SName) VALUES ('"
+                    + studentList.get(i) + "', '"
+                    + studentsInfo.get(studentList.get(i)) + "')";
+            instructions.add(temp);
+
+        }
+
+        return instructions;
+    }
+    
+    public List<String> convertToEnrolmentInsertStatements(List<CourseStruct> coursesInfo, List<String> courseList){
+        List<String> instructions = new ArrayList<>();
+        int eIndex = 1;
+        for(CourseStruct tempCourse : coursesInfo){
+            for(StudentStruct tempStudent : tempCourse.enrolledStudents){
+                String temp = "INSERT into STUDENT_COURSE (SCNo, SID_FK, CNo_FK) VALUES ("
+                    + eIndex + ", '"
+                    + tempStudent.studentID + "', "
+                    + (courseList.indexOf(tempCourse.courseCode)+1) + ")";
+                instructions.add(temp);                
+                eIndex++;
+                
+            }
+        }
+        
         return instructions;
     }
 

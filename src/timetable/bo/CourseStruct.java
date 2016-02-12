@@ -8,6 +8,7 @@
 package timetable.bo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,12 +19,14 @@ public class CourseStruct {
     public String courseTitle;
     public String batch;
     public String teacher;
+    public List<StudentStruct> enrolledStudents;
 
     public CourseStruct() {
         this.courseCode = "";
         this.courseTitle = "";
         this.batch = "";
         this.teacher = "";
+        this.enrolledStudents = new ArrayList<>();
     }
     
     

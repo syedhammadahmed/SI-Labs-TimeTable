@@ -18,14 +18,11 @@ import timetable.bo.CourseStruct;
  * @author Qureshi
  */
 public class CourseInfoTranslator {
-    public boolean convertToCourseStruct(XSSFWorkbook workbook, List<CourseStruct> courseInfo){
+    public boolean convertToCourseStruct(XSSFWorkbook workbook, List<CourseStruct> coursesInfo){
         XSSFSheet courseInfoSheet = workbook.getSheetAt(0);
         
         XSSFCell cell;
         for(Row row : courseInfoSheet){
-            
-            
-            
             CourseStruct tempCourseStruct = new CourseStruct();
             tempCourseStruct.courseCode = row.getCell(0).getStringCellValue();
             tempCourseStruct.courseTitle = row.getCell(1).getStringCellValue();
@@ -36,10 +33,11 @@ public class CourseInfoTranslator {
                 tempCourseStruct.teacher = "";
             }
             
-            courseInfo.add(tempCourseStruct);
+            if(!tempCourseStruct.courseCode.equals("Course Code")){
+                coursesInfo.add(tempCourseStruct);
+            }
+            
         }
-        
-        
         return true;
     }
 }

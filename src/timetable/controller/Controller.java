@@ -8,6 +8,7 @@ package timetable.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import timetable.bo.CourseStruct;
@@ -17,132 +18,87 @@ import timetable.dal.*;
 import timetable.translate.CourseInfoTranslator;
 import timetable.translate.DataBaseTranslator;
 import timetable.translate.ScheduleTranslator;
+import timetable.translate.StudentInfoTranslator;
 import timetable.utility.Constants;
-//import timetable.dal.ScheduleReader; 
+
 /**
  *
  * @author Qureshi
  */
 public class Controller {
-    private TableStruct[] semesterTables; 
+
+    private TableStruct[] semesterTables;
     private List<CourseStruct> coursesInfo;
+    private HashMap<String, String> studentsInfo;
     private List<CourseTimeSlotStruct> scheduleInfo;
     private XSSFWorkbook workbook;
-    private ScheduleReader sReader;
-    private CourseInfoReader cReader;
-    private ScheduleTranslator sTranslator;
-    private CourseInfoTranslator cTranslator;
-    private DataBaseReader dbReader;
-    private DataBaseWriter dbWriter;
-    private DataBaseTranslator dbTranslator;
     private List<String> courseInsertStatements;
-//    private Reader = new ScheduleReader();
     private List<String> teacherInsertStatements;
+    private List<String> studentInsertStatements;
     private List<String> scheduleInsertStatements;
     private List<String> classRoomInsertStatements;
+    private List<String> enrolmentInsertStatements;
     private List<String> teacherList;
     private List<String> courseList;
-    private int numberOfSheets;
-    
-    public Controller() throws SQLException{
+    private List<String> studentList;
+
+    public Controller() throws SQLException {
         semesterTables = new TableStruct[15];
-        
-        for(int i=0; i<15; i++){
+        for (int i = 0; i < 15; i++) {
             semesterTables[i] = new TableStruct(5, 8);
         }
         coursesInfo = new ArrayList<>();
+        studentsInfo = new HashMap<>();
         scheduleInfo = new ArrayList<>();
-        sReader = new ScheduleReader();
-        cReader = new CourseInfoReader();
-        sTranslator = new ScheduleTranslator();
-        cTranslator = new CourseInfoTranslator();
         workbook = new XSSFWorkbook();
-        dbReader = new DataBaseReader();
-        dbWriter = new DataBaseWriter();
-        dbTranslator = new DataBaseTranslator();
         teacherList = new ArrayList<>();
         courseList = new ArrayList<>();
+        studentList = new ArrayList<>();
     }
-    
-    public boolean clearDataBase() throws SQLException{
-        return dbWriter.clearTables();
+
+    public boolean clearDataBase() throws SQLException {
+        DataBaseWriter dbWriter = new DataBaseWriter();
+        return dbWriter.clearAllTables();
     }
-    
-    public boolean loadCourseInfo() throws IOException{
-        
-        workbook = cReader.read();
-//        cTranslator.convertToCourseStruct(workbook, coursesInfo);
-        courseInsertStatements = dbTranslator.convertToCourseInsertStatements(coursesInfo, courseList, teacherList);
-        
-        return true;
-    }
-    
-    public boolean writeCourseInfo() throws SQLException{
-        dbWriter.runInsertStatements(courseInsertStatements);
-        
-        return true;
-    }
-    
-    public boolean loadTeacherInfo() throws IOException{
-        
-        workbook = cReader.read();
-        cTranslator.convertToCourseStruct(workbook, coursesInfo);
-        teacherInsertStatements = dbTranslator.convertToTeacherInsertStatements(coursesInfo, teacherList);
-        return true;
-    }
-    
-    public boolean writeTeacherInfo() throws SQLException{
-        dbWriter.runInsertStatements(teacherInsertStatements);
-        
-        return true;
-    }
-    
-    
-    public boolean loadSchedule() throws IOException{
-        workbook = sReader.read();
-        sTranslator.convertToTableStruct(workbook, semesterTables);
-        scheduleInfo = sTranslator.parseSchedule(semesterTables, courseList);
-        scheduleInsertStatements = dbTranslator.convertToScheduleInsertStatements(scheduleInfo);
-//        if(reader.read(workbook)){        
-//            return translator.convertToTableStruct(workbook, semesterTables);
-//        }        
-        return true;
-    }
-    
-    public boolean loadClassRooms(){
-        
-        classRoomInsertStatements = dbTranslator.classRoomInsertStatements(Constants.CLASSROOMS);
-        return true;
-    }
-    
-    public boolean writeClassRooms() throws SQLException{
-        
+
+    public boolean loadDataBase() throws SQLException, IOException {
+        DataBaseTranslator dbTranslator = new DataBaseTranslator();
+        CourseInfoReader ciReader = new CourseInfoReader();
+        CourseInfoTranslator ciTranslator = new CourseInfoTranslator();
+        ScheduleReader schReader = new ScheduleReader();
+        DataBaseWriter dbWriter = new DataBaseWriter();
+
+        ScheduleTranslator schTranslator = new ScheduleTranslator();
+        StudentInfoReader stReader = new StudentInfoReader();
+        StudentInfoTranslator stTranslator = new StudentInfoTranslator();
+        classRoomInsertStatements = dbTranslator.classRoomInsertStatements(
+                Constants.CLASSROOMS);
         dbWriter.runInsertStatements(classRoomInsertStatements);
-        return true;
-    }
-    
-    public boolean writeSchedule() throws SQLException{
+
+        workbook = ciReader.read();
+        ciTranslator.convertToCourseStruct(workbook, coursesInfo);
+        teacherInsertStatements = dbTranslator.convertToTeacherInsertStatements(
+                coursesInfo, teacherList);
+        dbWriter.runInsertStatements(teacherInsertStatements);
+        courseInsertStatements = dbTranslator.convertToCourseInsertStatements(
+                coursesInfo, courseList, teacherList);
+        dbWriter.runInsertStatements(courseInsertStatements);
+
+        workbook = schReader.read();
+        schTranslator.convertToTableStruct(workbook, semesterTables);
+        scheduleInfo = schTranslator.parseSchedule(semesterTables, courseList);
+        scheduleInsertStatements = dbTranslator.convertToScheduleInsertStatements(
+                scheduleInfo);
         dbWriter.runInsertStatements(scheduleInsertStatements);
-        
+
+        workbook = stReader.read();
+        stTranslator.convertToStudentMap(workbook, studentsInfo, coursesInfo);
+        studentInsertStatements = dbTranslator.convertToStudentInsertStatements(studentsInfo, studentList);
+        enrolmentInsertStatements = dbTranslator.convertToEnrolmentInsertStatements(coursesInfo, courseList);
+        dbWriter.runInsertStatements(studentInsertStatements);
+        dbWriter.runInsertStatements(enrolmentInsertStatements);
+
         return true;
     }
-    
-    
-//    
-//    public boolean fetchTimeSlots() throws SQLException{
-//        return dbReader.queryTest();
-//    }
-//    
-//    
-//    public void printTest(){
-//        for(int i=0; i<5; i++){
-//            for(int j=0; j<8; j++){
-//                System.out.print(semesterTables[0].table[i][j]);
-//                System.out.println("\n");
-//            }
-//        }
-//    }
-    
-    
-    
+
 }

@@ -17,14 +17,20 @@ public class Tester {
     public static void main(String[] args ) throws IOException, SQLException{
         Controller controller = new Controller();
         controller.clearDataBase();
-        controller.loadClassRooms();
-        controller.writeClassRooms();
-        controller.loadTeacherInfo();
-        controller.writeTeacherInfo();
-        controller.loadCourseInfo();
-        controller.writeCourseInfo();        
-        controller.loadSchedule();
-        controller.writeSchedule();      
+        controller.loadDataBase();
+        
+        
+//        controller.writeClassRooms();
+//        controller.loadTeacherInfo();
+//        controller.writeTeacherInfo();  
+//        controller.loadStudentInfo();
+//        controller.writeStudentInfo();
+//        controller.loadCourseInfo();
+//        controller.writeCourseInfo();        
+//        controller.loadSchedule();
+//        controller.writeSchedule();      
+//        controller.loadEnrolment();
+//        controller.writeEnrolment();      
         
         
         
